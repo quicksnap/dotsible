@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+# http://stackoverflow.com/questions/1489183/colorized-ruby-output =)
+class String
+  # colorization
+  def colorize(color_code)
+    "\e[#{color_code}m#{self}\e[0m"
+  end
+
+  def red
+    colorize(31)
+  end
+
+  def green
+    colorize(32)
+  end
+end
+
+##############
+dotsible_path = File.expand_path(File.dirname(__FILE__))
+
+unless File.exists?(dotsible_path + '/my-inventory') then
+  puts "Copying inventory template to #{dotsible_path}/my-inventory"
+  `cp '#{dotsible_path}/my-inventory.example' '#{dotsible_path}/my-inventory'`
+end
+
+unless Dir.exists?(dotsible_path + '/dotfiles') then
+  puts "[ERROR]: ".red
+  puts "  Looks like you didn't clone a 'dotfiles' directory"
+  puts "  into #{dotsible_path}. Try this: "
+  puts "  git clone https://github.com/username/dotfiles.git #{dotsible_path}/dotfiles".green
+  exit
+end
+
+puts "Running dotfiles sync..".green
+system("ansible-playbook -i '#{dotsible_path}/my-inventory' '#{dotsible_path}/site.yml' -vv")

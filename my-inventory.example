@@ -1,0 +1,14 @@
+#####
+# Don't remove the [local] section! Used by hacky shell:find/register
+#####
+[local]
+localhost ansible_connection=local
+
+#####
+# These are the nodes where your dotfiles will output.
+# Leave 'localhost' to sync your dotfile repo locally.
+#####
+[managed]
+localhost ansible_connection=local
+# my.awesome.server   ansible_ssh_user=mylogin
+# my.awesome.server2  ansible_ssh_user=mylogin2

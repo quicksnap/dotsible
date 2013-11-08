@@ -1,0 +1,24 @@
+---
+- name: Gathering information on your stuff
+  hosts: local
+  tasks:
+    # This seems to work with Ansible 1.3--the relative directory
+    # of localhost is the directory in which the playbook resides.
+    - name: only on LOCAL find files
+      shell: cd {{dotfiles_src}} && find . -type f | grep -v .git
+      register: dingus_files
+
+    - name: only LOCAL find dirs
+      shell: cd {{dotfiles_src}} &&  find . -type d | grep -v .git
+      register: dingus_dirs
+
+- name: Syncing your dotfiles
+  hosts: managed
+  tasks:
+    - name: make the dingus_dirs
+      file: path=~/sandbox/{{ item }} state=directory
+      with_items: dingus_dirs.stdout_lines
+
+    - name: copy some shit
+      template: src={{dotfiles_src}}/{{ item }} dest={{dotfiles_dest}}/{{ item }}
+      with_items: dingus_files.stdout_lines
