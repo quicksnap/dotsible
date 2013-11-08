@@ -6,19 +6,19 @@
     # of localhost is the directory in which the playbook resides.
     - name: only on LOCAL find files
       shell: cd {{dotfiles_src}} && find . -type f | grep -v .git
-      register: dingus_files
+      register: local_files
 
     - name: only LOCAL find dirs
       shell: cd {{dotfiles_src}} &&  find . -type d | grep -v .git
-      register: dingus_dirs
+      register: local_dirs
 
 - name: Syncing your dotfiles
   hosts: managed
   tasks:
-    - name: make the dingus_dirs
+    - name: make the dotfiles directories
       file: path=~/sandbox/{{ item }} state=directory
-      with_items: dingus_dirs.stdout_lines
+      with_items: local_dirs.stdout_lines
 
-    - name: copy some shit
+    - name: copy dotfiles
       template: src={{dotfiles_src}}/{{ item }} dest={{dotfiles_dest}}/{{ item }}
-      with_items: dingus_files.stdout_lines
+      with_items: local_files.stdout_lines
