@@ -17,8 +17,8 @@
   tasks:
     - name: make the dotfiles directories
       file: path=~/sandbox/{{ item }} state=directory
-      with_items: local_dirs.stdout_lines
+      with_items: hostvars[groups['local'][0]].local_dirs.stdout_lines
 
     - name: copy dotfiles
       template: src={{dotfiles_src}}/{{ item }} dest={{dotfiles_dest}}/{{ item }}
-      with_items: local_files.stdout_lines
+      with_items: hostvars[groups['local'][0]].local_files.stdout_lines
