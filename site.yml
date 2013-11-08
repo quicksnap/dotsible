@@ -16,7 +16,7 @@
   hosts: managed
   tasks:
     - name: make the dotfiles directories
-      file: path=~/sandbox/{{ item }} state=directory
+      file: path={{ dotfiles_dest }}/{{ item }} state=directory
       with_items: hostvars[groups['local'][0]].local_dirs.stdout_lines
 
     - name: copy dotfiles
