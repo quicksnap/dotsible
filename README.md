@@ -6,8 +6,10 @@ Ansible's `template` module.
 
 # Requirements
 
-Ansible 1.3 or higher is required. This is currenly kind of hacky (see `site.yml`) and
+Ansible 1.3 or higher is required on your local machine. This is currenly kind of hacky (see `site.yml`) and
 may break with future Ansible releases.
+
+Ruby is also required locally for the `sync` script.
 
 # Usage
 
